@@ -33,6 +33,9 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
     private var revenue = 0
     private var dessertsSold = 0
+    private val KEY_REVENUE ="key_revenue";
+    private val KEY_SOLD ="key_sold";
+    private val KEY_TIMER ="key_timer";
 
     private lateinit var dessertTimer: DessertTimer
 
@@ -77,6 +80,13 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
         binding.dessertButton.setOnClickListener {
             onDessertClicked()
+        }
+
+        if(savedInstanceState!=null)
+        {
+            revenue=savedInstanceState.getInt(KEY_REVENUE)
+            dessertsSold=savedInstanceState.getInt(KEY_SOLD)
+            //dessertTimer=savedInstanceState.get
         }
 
         dessertTimer=DessertTimer(this.lifecycle)
@@ -177,6 +187,13 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         super.onStop()
         dessertTimer.stopTimer()
         Timber.i("onStop called")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_REVENUE,revenue)
+        outState.putInt(KEY_SOLD,dessertsSold)
+        //outState.put
     }
 
     override fun onDestroy() {
